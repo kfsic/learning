@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  name      String   // Nom complet de l'utilisateur
+  sexe      String   // Genre (homme/femme/autre)
+  dateNais  String // Date de naissance
+
+chapitre    Chapitre[]
+
+  roleId    Int
+  role      Role     @relation(fields: [roleId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  title     String   @unique // Titre du rôle (par exemple: Admin, User, etc.)
+  users     User[]   // Relation avec les utilisateurs ayant ce rôle
+  permissions Permission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Feature {
+  id        Int      @id @default(autoincrement())
+  title     String   @unique // Nom de la fonctionnalité (par exemple: "Créer un post", "Supprimer un post")
+  permissions Permission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Permission {
+  id         Int      @id @default(autoincrement())
+
+  roleId     Int
+  role       Role     @relation(fields: [roleId], references: [id])
+
+  featureId  Int
+  feature    Feature  @relation(fields: [featureId], references: [id])
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Chapitre {
+  id          Int       @id @default(autoincrement())
+  title       String    // Titre du chapitre
+  description String?   // Description du chapitre (facultatif)
+  
+  sections    Section[] // Relation avec les sections
+  
+  userId    Int
+  User      User     @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Section {
+  id          Int       @id @default(autoincrement())
+  title       String    // Titre de la section
+  rang        Int
+
+  chapitreId  Int       // ID du chapitre parent
+  chapitre    Chapitre  @relation(fields: [chapitreId], references: [id]) // Relation avec le chapitre
+  
+  fichiersCours FichierCours[] // Relation avec les fichiers cours
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Fichier {
+  id          Int       @id @default(autoincrement())
+  title       String    @unique // Titre du fichier
+  url         String    // URL du fichier
+
+  fichiersCours FichierCours[] // Relation avec les fichiers cours
+  ressources  Ressource[]      // Relation avec les ressources associées
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model FichierCours {
+  id          Int       @id @default(autoincrement())
+
+  fichierId   Int       // ID du fichier associé
+  fichier     Fichier   @relation(fields: [fichierId], references: [id]) // Relation avec le fichier
+
+  sectionId   Int       // ID de la section associée
+  section     Section   @relation(fields: [sectionId], references: [id]) // Relation avec la section
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Ressource {
+  id          Int       @id @default(autoincrement())
+  title       String    @unique // Titre de la ressource
+  url         String    // URL de la ressource
+
+  fichierId   Int       // ID du fichier associé
+  fichier     Fichier   @relation(fields: [fichierId], references: [id]) // Relation avec le fichier
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

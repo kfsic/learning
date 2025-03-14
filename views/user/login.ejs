@@ -1,0 +1,13 @@
+  <%- include('../partials/header', { title: 'page Connexion ' }) %>
+    <div class="container mt-5">
+        <h1 class="mb-4">Add User</h1>
+        <form action="/user/create-user" method="post">
+
+
+            <%- include('../composant/input', { name: 'username', type: 'text', label: 'Username' }) %>
+            <%- include('../composant/input', { name: 'password', type: 'password', label: 'Password' }) %>
+   
+            <button type="submit" class="btn btn-primary">connexion</button>
+        </form>
+    </div>
+<%- include('../partials/footer') %>

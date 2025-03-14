@@ -1,0 +1,20 @@
+<%- include('../partials/header', { title: "Page d'inscription" }) %>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Créer un utilisateur</h1>
+    <form id="userForm" action="/auth/create-user" method="post">
+        <!-- Champs du formulaire -->
+        <%- include('../composant/input', { name: 'username', type: 'text', label: 'Nom d\'utilisateur' }) %>
+        <%- include('../composant/input', { name: 'password', type: 'password', label: 'Mot de passe' }) %>
+        <%- include('../composant/input', { name: 'name', type: 'text', label: 'Nom complet' }) %>
+        <%- include('../composant/input', { name: 'sexe', type: 'text', label: 'Sexe' }) %>
+        <%- include('../composant/input', { name: 'dateNais', type: 'date', label: 'Date de naissance' }) %>
+        <%- include('../composant/input', { name: 'roleId', type: 'number', label: 'Identifiant du rôle' }) %>
+
+        <!-- Bouton de soumission -->
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+    </form>
+</div>
+
+<%- include('../partials/footer') %>
+
