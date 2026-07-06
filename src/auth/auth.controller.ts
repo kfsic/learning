@@ -87,7 +87,7 @@ export class AuthController {
       example: {
         id: 1,
         username: 'john_doe',
-        name: 'John Doe',
+        name: 'John Doe poncy',
         sexe: 'homme',
         dateNais: '1990-05-15',
         roleId: 1,
